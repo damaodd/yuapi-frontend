@@ -116,29 +116,22 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
-      // 登录
       const res = await userLoginUsingPost({
         ...values,
       });
-      // 检查返回的 res 对象中是否包含 data 属性，如果包含则表示登录成功
       if (res.data) {
-        // 创建一个新的 URL 对象，并获取当前 window.location.href 的查询参数
         const urlParams = new URL(window.location.href).searchParams;
-        // 将用户重定向到 'redirect' 参数指定的 URL，如果 'redirect' 参数不存在，则重定向到首页 ('/')
-        history.push(urlParams.get('redirect') || '/');
-        // 用登录用户的数据更新初始状态
-        setInitialState({
-          loginUser: res.data,
+        await setInitialState({
+          loginUser: res.data
         });
+        setTimeout(() => {
+          history.push(urlParams.get('redirect') || '/');
+        }, 100);
         return;
       }
-      //如果抛出异常
     } catch (error) {
-      // 定义默认的登录失败消息
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      // 在控制台打印出错误
       console.log(error);
-      // 使用 message 组件显示错误信息
       message.error(defaultLoginFailureMessage);
     }
   };
@@ -182,7 +175,7 @@ const Login: React.FC = () => {
             <ActionIcons key="icons" />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.UserLoginRequest);
           }}
         >
           <Tabs
@@ -218,7 +211,7 @@ const Login: React.FC = () => {
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="userAccount"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined />,
@@ -240,7 +233,7 @@ const Login: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="userPassword"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined />,
