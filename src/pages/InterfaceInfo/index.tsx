@@ -13,8 +13,6 @@ import {
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
 import {
   addInterfaceInfoUsingPost, deleteInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingGet, updateInterfaceInfoUsingPost
